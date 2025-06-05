@@ -1,0 +1,24 @@
+<!-- templates/fragments/header.html -->
+<html lang="es" xmlns:th="http://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<div th:fragment="header">
+    <header class="header">
+        <div class="nav-container">
+            <nav class="navbar">
+                <a th:href="@{/}" th:classappend="${currentPath == '/' ? 'active' : ''}">Inicio</a>
+                <a th:href="@{/test-api}" th:classappend="${currentPath == '/test-api' ? 'active' : ''}">Probar API</a>
+
+                <!-- Mostrar Login si no está autenticado -->
+                <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Iniciar sesión</a>
+                <a sec:authorize="!isAuthenticated()" th:href="@{/register}">Registrarse</a>
+
+                <!-- Mostrar nombre de usuario como enlace a /account si está autenticado -->
+                <span sec:authorize="isAuthenticated()">
+                    <a th:href="@{/account}" style="font-weight: bold;" sec:authentication="name"></a>
+                    <a th:href="@{/logout}"><i>(Cerrar sesión)</i></a>
+                </span>
+            </nav>
+        </div>
+    </header>
+</div>
+</html>

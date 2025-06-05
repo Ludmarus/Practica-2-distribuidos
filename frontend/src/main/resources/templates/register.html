@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrarse</title>
+  <link rel="stylesheet" th:href="@{/assets/css/style.css}" />
+</head>
+<body class="fade-preload">
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="page-content">
+  <p style="color:var(--bittersweet);font-size:1.5em">Registro de nuevo usuario</p>
+
+  <div th:if="${error}" style="color:red;">[[${error}]]</div>
+
+  <form th:action="@{/register}" method="post" onsubmit="return validateForm()">
+    <input type="text" name="username" placeholder="Usuario" required maxlength="30" />
+
+    <input type="password" id="password" name="password" placeholder="Contraseña" required maxlength="64" />
+    <input type="password" id="confirm" name="confirmPassword" placeholder="Confirmar contraseña" required maxlength="64" />
+
+    <p style="font-size:0.9em">La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.</p>
+
+    <button type="submit">Crear cuenta</button>
+  </form>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/assets/js/script.js}"></script>
+<script>
+  function validateForm() {
+    const pass = document.getElementById("password").value;
+    const confirm = document.getElementById("confirm").value;
+
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,64}$/;
+
+    if (pass !== confirm) {
+      alert("Las contraseñas no coinciden.");
+      return false;
+    }
+
+    if (!regex.test(pass)) {
+      alert("La contraseña no cumple los requisitos.");
+      return false;
+    }
+
+    return true;
+  }
+</script>
+</body>
+</html>

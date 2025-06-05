@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}" />
+</head>
+<body class="fade-preload">
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="page-content">
+    <h1 style="color:var(--bittersweet); font-size:1.5em;">Ha ocurrido un error</h1>
+
+    <p th:if="${status}" style="margin-top:1em;">Código de error: <span th:text="${status}"></span></p>
+    <p th:if="${message}">Mensaje: <span th:text="${message}"></span></p>
+    <p th:if="${path}">Ruta: <span th:text="${path}"></span></p>
+
+    <br>
+    <a th:href="@{/}" style="color: var(--bittersweet); font-weight: bold;">&larr; Volver al inicio</a>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/assets/js/script.js}"></script>
+</body>
+</html>

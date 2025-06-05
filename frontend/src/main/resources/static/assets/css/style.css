@@ -1,0 +1,245 @@
+/* Colors */
+:root {
+    --white: #fff;
+    --black: #000;
+    --afwhite: #EFF1F3;
+    --jet: #312F2F;
+    --cblue: #00A1E0;
+    --bittersweet: #FE675D;
+}
+
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+
+@font-face {
+    font-family: "Bernardo Moda";
+    src: url("assets/fonts/bernardo-moda.woff2") format("woff2"),
+        url("assets/fonts/bernardo-moda.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* Logo */
+.logo {
+    display: inline-block;
+    padding: 0 0.5em;
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+.logo svg {
+    max-height: 3em;
+    transition: transform 0.3s ease;
+}
+
+.logo svg:hover {
+    transform: scale(1.025);
+}
+
+/* Navbar */
+.header {
+    padding: 0.8em 1.5em;
+    background-color: var(--white)
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+}
+
+.navbar a {
+    color: var(--black);
+    text-align: center;
+    padding: 8px 12px;
+    text-decoration: none;
+    font-family: 'Open Sans', sans-serif; /* Cambiado aquí también */
+    transition: color 0.3s ease, text-shadow 0.6s ease;
+}
+
+.navbar a:hover {
+    color: var(--bittersweet);
+    text-shadow: 0px 0px 6px rgba(254, 103, 93, 0.2);
+}
+
+/* Resaltar el enlace activo */
+.navbar a.active {
+    font-weight: bold;
+}
+
+.navbar a.active:hover {
+    color: var(--white);
+}
+
+
+/* Footer */
+footer {
+    display: flex;
+    justify-content: center;
+    padding: 1.8rem;
+    background-color: var(--jet);
+    color: var(--white);
+}
+
+.footer-content {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+footer a {
+    color: var(--white);
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: var(--bittersweet);
+}
+
+footer svg {
+    width: 3em;
+    height: 3em;
+    color: var(--white);
+    transition: color 0.3s ease;
+}
+
+footer svg:hover {
+    color: var(--bittersweet);
+}
+
+/* Main */
+body {
+    margin: 0;
+    background-color: var(--jet);
+    color: var(--white);
+    transition: opacity 0.5s ease;
+}
+
+body.fade-preload {
+    opacity: 1;
+}
+
+body.fade-in {
+    opacity: 1;
+}
+
+.page-content {
+    background-color: var(--afwhite);
+    color: var(--black);
+    padding: 42px 10%;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+/*******************************************************/
+/*                      DARK MODE                      */
+/*******************************************************/
+@media (prefers-color-scheme: dark) {
+    img {
+        opacity: 0.75;
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    img:hover {
+        opacity: 1;
+    }
+
+    .header,
+    .nav-container,
+    .navbar {
+        background-color: var(--black);
+    }
+
+    .navbar a {
+        color: var(--white);
+        transition: color 0.3s ease, text-shadow 0.6s ease;
+    }
+
+    .navbar a:hover {
+        color: var(--bittersweet);
+        text-shadow: 0px 0px 6px rgba(254, 103, 93, 0.5);
+    }
+
+    footer {
+        background-color: var(--black);
+        color: var(--white);
+    }
+
+    footer a {
+        color: var(--white);
+    }
+
+    footer a:hover {
+        color: var(--bittersweet);
+    }
+
+    footer svg {
+        color: var(--white);
+    }
+
+    footer svg:hover {
+        color: var(--bittersweet);
+    }
+
+    body {
+        background-color: var(--black);
+        color: var(--white);
+    }
+
+    .page-content {
+        background-color: var(--jet);
+        color: var(--white);
+    }
+}
+
+/*******************************************************/
+/*                       MOBILE                        */
+/*******************************************************/
+@media screen and (max-width: 1000px) {
+    .nav-container {
+        overflow: hidden;
+        text-align: left;        
+    }
+
+    .bar {
+        overflow: hidden;
+        padding: 0% 5%;
+        margin: 0;
+        position: sticky;
+        top: 0;
+    }
+
+    .navbar a {
+        text-align: center;
+        padding: 10px 14px 8px 14px;
+    }
+}
+
+/*******************************************************/
+/*                        ANIMS                        */
+/*******************************************************/
+@keyframes accent-flash {
+    0% {
+        filter: drop-shadow(0 0 0px var(--bittersweet));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 8px var(--bittersweet));
+    }
+
+    100% {
+        filter: drop-shadow(0 0 0px var(--bittersweet));
+    }
+}
+
+.accent-animate {
+    animation: accent-flash 0.6s ease;
+}

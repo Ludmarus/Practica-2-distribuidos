@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probar la base de datos</title>
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}" />
+    <style>
+        .error-card {
+            border: 1px solid var(--bittersweet);
+            border-radius: 1em;
+            padding: 1em;
+            margin: 1em 0;
+        }
+        .error-card h3 {
+            margin-top: 0;
+        }
+        .button-grid button {
+            margin-top: 0.5em;
+        }
+    </style>
+</head>
+<body class="fade-preload">
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="page-content">
+    <h1 style="color:var(--bittersweet);font-size:1.5em">Simulación de errores de base de datos</h1>
+
+    <p>Haz clic en cada caso para lanzar una petición a Flask. Los errores se tratan y traducen en el frontend.</p>
+
+    <div class="error-card">
+        <h3>Consulta correcta</h3>
+        <p>Consulta sin errores. Se listan los usuarios existentes en la base de datos.</p>
+        <button onclick="probarCaso('ok')">Ejecutar</button>
+    </div>
+
+    <div class="error-card">
+        <h3>Usuario duplicado</h3>
+        <p>Intenta insertar dos usuarios con el mismo nombre. Provoca un <strong>IntegrityError</strong> por clave única.</p>
+        <button onclick="probarCaso('duplicado')">Ejecutar</button>
+    </div>
+
+    <div class="error-card">
+        <h3>Tipo inválido</h3>
+        <p>Inserta un usuario sin nombre (null). Provoca un <strong>IntegrityError</strong> por valor no permitido en una columna obligatoria.</p>
+        <button onclick="probarCaso('tipo_invalido')">Ejecutar</button>
+    </div>
+
+    <div class="error-card">
+        <h3>Sin contexto</h3>
+        <p>Elimina la sesión de base de datos y luego intenta leer usuarios. Provoca un <strong>RuntimeError</strong> por acceso fuera del contexto de aplicación.</p>
+        <button onclick="probarCaso('sin_contexto')">Ejecutar</button>
+    </div>
+
+    <div id="resultadoApi" style="margin-top: 1.5em; font-weight: bold;"></div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/assets/js/script.js}"></script>
+<script>
+    function probarCaso(caso) {
+        const resultado = document.getElementById('resultadoApi');
+
+        fetch(`http://127.0.0.1:5000/api/test-error?caso=${caso}`)
+            .then(res => res.json())
+            .then(data => {
+                let mensaje = '';
+                if (data.message) {
+                    mensaje = "✅ " + data.message;
+                    resultado.style.color = 'green';
+                } else if (data.error) {
+                    mensaje = traducirError(data.error);
+                    resultado.style.color = 'red';
+                } else {
+                    mensaje = 'Respuesta inesperada del servidor.';
+                    resultado.style.color = 'orange';
+                }
+                resultado.textContent = mensaje;
+            })
+            .catch(error => {
+                resultado.textContent = 'No se pudo conectar con el servidor Flask.';
+                resultado.style.color = 'red';
+                console.error('Error al contactar con Flask:', error);
+            });
+    }
+
+    function traducirError(error) {
+        if (error.includes('integridad')) {
+            return 'Error de integridad: valores duplicados o columnas obligatorias no válidas.';
+        } else if (error.includes('contexto')) {
+            return 'Error de contexto: se intentó acceder a la base de datos fuera del ámbito permitido.';
+        } else {
+            return 'Error inesperado: ' + error;
+        }
+    }
+</script>
+</body>
+</html>

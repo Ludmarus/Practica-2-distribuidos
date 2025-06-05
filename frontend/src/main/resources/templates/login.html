@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}" />
+</head>
+<body class="fade-preload">
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="page-content">
+    <p style="color:var(--bittersweet);font-size:1.5em">Inicio de sesión</p>
+
+    <div th:if="${param.error}" style="color:red;">
+        Usuario o contraseña inválidos.
+    </div>
+    <div th:if="${param.logout}" style="color:green;">
+        Sesión cerrada correctamente.
+    </div>
+
+    <form th:action="@{/do-login}" method="post">
+        <input type="text" name="username" placeholder="Usuario" required />
+        <input type="password" name="password" placeholder="Contraseña" required />
+        <button type="submit">Iniciar sesión</button>
+    </form>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/assets/js/script.js}"></script>
+</body>
+</html>

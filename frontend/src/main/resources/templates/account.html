@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi cuenta</title>
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}" />
+</head>
+<body class="fade-preload">
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="page-content">
+    <h1 style="color:var(--bittersweet);font-size:1.5em">Información de tu cuenta</h1>
+
+    <div th:if="${error}" style="color: red;">[[${error}]]</div>
+    <div th:unless="${error}">
+        <p><strong>Nombre de usuario:</strong> <span th:text="${usuario}">usuario</span></p>
+        <p><strong>Fecha de creación:</strong> <span th:text="${creacion}">--</span></p>
+
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/assets/js/script.js}"></script>
+</body>
+</html>
