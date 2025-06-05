@@ -2,7 +2,10 @@
 
 Aplicación web con autenticación integrada entre Spring Boot (frontend) y Flask (backend), que permite iniciar sesión y registrarse con persistencia de datos.
 
-## 📁 Estructura del proyecto
+## Autora
+
+Lucía Martín Asenjo (lma1006@alu.ubu.es)
+## Estructura del proyecto
 
 ```
 loginDB-v2/
@@ -18,108 +21,57 @@ loginDB-v2/
 ```
 
 ---
+## Ejecución con Docker Compose
 
-## 🚀 Ejecución desde IntelliJ con Maven
+> La forma más sencilla de levantar todo junto.
 
-> **Requisitos previos**: Java 17+, Maven, Python 3, Flask, y haber añadido correctamente el módulo `backend/` como módulo adicional en IntelliJ.
+### 1. Construír las imágenes
 
-### 1. Clona el repositorio y abre `frontend/` como proyecto principal en IntelliJ
+```bash
+docker compose build
+```
+
+### 2. Arrancar los servicios
+
+```bash
+docker compose up
+```
+
+- Flask se ejecuta en `http://localhost:5000`
+- Spring Boot se ejecuta en `http://localhost:8080`
+
+### 3. Acceder a la aplicación
+
+Abrir [http://localhost:8080](http://localhost:8080)
+
+---
+## Ejecución desde IntelliJ con Maven
+
+> **Requisitos previos**: Java 17+, Maven, Python 3, y Flask. Lo demás está en `backend/requeriments.txt`.
+
+### 1. Clonar el repositorio y abrir `frontend/` como proyecto principal en IntelliJ
 
 ```bash
 git clone ...
 cd loginDB-v2/frontend
 ```
 
-### 2. Añade `backend/` como módulo adicional (solo una vez)
+### 2. Añadir `backend/` como módulo adicional
 
 En IntelliJ:
 - `File > New > Module from Existing Sources…`
-- Elige `../backend`
-- Tipo: "Python" (o simplemente incluirlo como recurso)
+- Elegir `../backend`
+- Tipo: "Python"
 
-### 3. Asegúrate de que el backend está corriendo
+### 3. Ejecutar el backend desde IntelliJ
 
-Desde consola (en `backend/`):
+Añadir `app.py` en `Run > Edit Configurations…`.
+### 4. Ejecutar el perfil `prod` en IntelliJ
 
-```bash
-cd ../backend
-python app.py
-```
-
-Deberías ver algo como: `Running on http://127.0.0.1:5000`
-
-### 4. Configura el perfil `prod` en IntelliJ (solo si usas `application-prod.properties`)
-
-En IntelliJ:
-- `Run > Edit Configurations…`
-- Añadir en VM Options:
-  ```
-  -Dspring.profiles.active=prod
-  ```
-
-> Alternativamente, añade el valor directamente a `application.properties` si prefieres no usar perfiles.
-
-### 5. Ejecuta el frontend desde IntelliJ
-
-Pulsa ▶️ sobre la clase `Application.java`.
+Añadir el perfil `prod` para `com.loginDB.app.Application` en  `Run > Edit Configurations…`
 
 ---
+## Notas técnicas
 
-## 🐳 Ejecución con Docker Compose
-
-> Esta es la forma más sencilla de levantar todo junto, listo para producción local.
-
-### 1. Construye las imágenes
-
-```bash
-docker compose build
-```
-
-### 2. Arranca los servicios
-
-```bash
-docker compose up
-```
-
-Esto ejecuta:
-- Flask en `http://localhost:5000`
-- Spring Boot en `http://localhost:8080`
-
-### 3. Accede a la aplicación
-
-Abre tu navegador en: [http://localhost:8080](http://localhost:8080)
-
----
-
-## 🛠️ Notas técnicas
-
-- Spring Boot utiliza `@Value("${flask.api.url}")` para conectarse al backend.
-  - En Docker, se pasa como variable de entorno desde `docker-compose.yml`.
-  - En IntelliJ/Maven, asegúrate de definirlo vía `application.properties` o como propiedad del sistema.
 - La base de datos es `H2` en memoria (puede cambiarse fácilmente por PostgreSQL o similar).
 - Los usuarios y contraseñas están protegidos con hash desde Flask (no se almacenan en texto plano).
-
----
-
-## 📦 Variables de entorno relevantes
-
-| Variable         | Descripción                     | Valor por defecto (Docker)     |
-|------------------|----------------------------------|-------------------------------|
-| `FLASK_ENV`      | Modo de ejecución del backend    | `development`                |
-| `FLASK_RUN_PORT` | Puerto del backend Flask         | `5000`                        |
-| `FLASK_API_URL`  | URL de conexión desde Spring     | `http://backend:5000`        |
-
----
-
-## ✨ Futuras mejoras
-
-- Cambiar contraseña desde `/account`
-- Imagen de perfil editable
-- Sustitución de H2 por PostgreSQL en producción
-- Tests unitarios para la API Flask
-
----
-
-## 🧃 Autoría
-
-Proyecto desarrollado por Lucía para la asignatura de Sistemas Distribuidos (Universidad de Burgos).
