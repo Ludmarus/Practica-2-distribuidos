@@ -1,0 +1,26 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+    networks:
+      - logindb_net
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    networks:
+      - logindb_net
+
+networks:
+  logindb_net:
+    driver: bridge

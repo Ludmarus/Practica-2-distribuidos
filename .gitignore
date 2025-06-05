@@ -1,0 +1,23 @@
+# Maven
+target/
+*.log
+
+# IDEs
+.idea/
+*.iml
+
+# Python/Flask
+__pycache__/
+*.pyc
+.env
+
+# Docker
+*.env
+*.pid
+*.sock
+
+# Javadoc
+javadoc/
+
+# Otros
+.DS_Store
