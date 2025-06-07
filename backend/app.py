@@ -100,9 +100,23 @@ def test_error():
             return {"message": "Usuario inválido insertado (no debería pasar)"}
 
         elif caso == "sin_contexto":
-            db.session.remove()
-            usuarios = User.query.all()
-            return {"message": f"Usuarios leídos: {len(usuarios)}"}
+            from threading import Thread
+            result = {}
+
+            def consulta_fuera_de_contexto():
+                try:
+                    usuarios = User.query.all()
+                    result["message"] = f"Usuarios leídos: {len(usuarios)}"
+                except Exception as e:
+                    result["error"] = str(e)
+
+            t = Thread(target=consulta_fuera_de_contexto)
+            t.start()
+            t.join()
+
+            if "error" in result:
+                raise RuntimeError(result["error"])
+            return {"message": result["message"]}
 
         else:
             return {"error": "Caso de prueba desconocido"}, 400
