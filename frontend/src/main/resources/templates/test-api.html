@@ -66,10 +66,10 @@
             .then(data => {
                 let mensaje = '';
                 if (data.message) {
-                    mensaje = "✅ " + data.message;
+                    mensaje = data.message;
                     resultado.style.color = 'green';
                 } else if (data.error) {
-                    mensaje = traducirError(data.error);
+                    mensaje = data.error;
                     resultado.style.color = 'red';
                 } else {
                     mensaje = 'Respuesta inesperada del servidor.';
@@ -82,16 +82,6 @@
                 resultado.style.color = 'red';
                 console.error('Error al contactar con Flask:', error);
             });
-    }
-
-    function traducirError(error) {
-        if (error.includes('integridad')) {
-            return 'Error de integridad: valores duplicados o columnas obligatorias no válidas.';
-        } else if (error.includes('contexto')) {
-            return 'Error de contexto: se intentó acceder a la base de datos fuera del ámbito permitido.';
-        } else {
-            return 'Error inesperado: ' + error;
-        }
     }
 </script>
 </body>

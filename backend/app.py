@@ -121,9 +121,15 @@ def test_error():
         else:
             return {"error": "Caso de prueba desconocido"}, 400
 
-    except IntegrityError:
+    except IntegrityError as e:
         db.session.rollback()
-        return {"error": "Error de integridad: dato duplicado o inválido"}, 409
+        mensaje = str(e.orig).lower()
+        if "unique constraint" in mensaje or "unique failed" in mensaje:
+            return {"error": "Duplicado: el nombre de usuario ya existe."}, 409
+        elif "not null constraint" in mensaje:
+            return {"error": "Columna obligatoria: falta un dato requerido."}, 409
+        else:
+            return {"error": f"Error de integridad: {mensaje}"}, 409
 
     except RuntimeError as e:
         return {"error": f"Acceso inválido al contexto de la base de datos: {str(e)}"}, 500
