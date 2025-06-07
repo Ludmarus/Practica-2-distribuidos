@@ -13,7 +13,7 @@
 
   <div th:if="${error}" style="color:red;">[[${error}]]</div>
 
-  <form th:action="@{/register}" method="post" onsubmit="return validateForm()">
+  <form th:action="@{/register}" method="post">
     <input type="text" name="username" placeholder="Usuario" required maxlength="30" />
 
     <input type="password" id="password" name="password" placeholder="Contraseña" required maxlength="64" />
@@ -27,25 +27,6 @@
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script th:src="@{/assets/js/script.js}"></script>
-<script>
-  function validateForm() {
-    const pass = document.getElementById("password").value;
-    const confirm = document.getElementById("confirm").value;
 
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,64}$/;
-
-    if (pass !== confirm) {
-      alert("Las contraseñas no coinciden.");
-      return false;
-    }
-
-    if (!regex.test(pass)) {
-      alert("La contraseña no cumple los requisitos.");
-      return false;
-    }
-
-    return true;
-  }
-</script>
 </body>
 </html>

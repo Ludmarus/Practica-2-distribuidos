@@ -13,19 +13,23 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Map;
 
-@Controller
 /**
- * AccountController class.
+ * Controlador responsable de la gestión de la página /account.
  */
+@Controller
 public class AccountController {
 
     @Value("${flask.api.base-url}")
     private String flaskApiBaseUrl;
 
+    /**
+     * Muestra la página /account con los datos del usuario autenticado.
+     *
+     * Consulta al backend Flask usando el nombre del usuario y obtiene:
+     * - username
+     * - fecha de creación
+     */
     @GetMapping("/account")
-/**
- * TODO: Describe getAccountInfo method.
- */
     public String getAccountInfo(Model model, Authentication authentication) {
         String username = authentication.getName();
         String apiUrl = flaskApiBaseUrl + "/user/" + username;

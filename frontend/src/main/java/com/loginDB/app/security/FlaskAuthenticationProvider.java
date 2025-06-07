@@ -15,19 +15,29 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Map;
 
-@Component
 /**
- * FlaskAuthenticationProvider class.
+ * Proveedor de autenticación personalizado que delega la validación de credenciales
+ * al backend Flask mediante una petición HTTP.
  */
+@Component
 public class FlaskAuthenticationProvider implements AuthenticationProvider {
 
+    /**
+     * URL del endpoint de login en Flask.
+     * Se configura desde application.properties.
+     */
     @Value("${flask.api.url}")
     private String flaskApiUrl;
 
+    /**
+     * Intenta autenticar al usuario enviando sus credenciales a Flask.
+     * Si Flask responde con éxito (código 2xx), se construye un token válido para Spring Security.
+     * En caso de fallo, lanza BadCredentialsException.
+     *
+     * @param authentication objeto que contiene el username y la contraseña
+     * @return token de autenticación con rol ROLE_USER si las credenciales son válidas
+     */
     @Override
-/**
- * TODO: Describe authenticate method.
- */
     public Authentication authenticate(Authentication authentication) {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
@@ -40,6 +50,7 @@ public class FlaskAuthenticationProvider implements AuthenticationProvider {
         HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
 
         try {
+            // Si Flask responde con 200, se considera autenticado
             restTemplate.postForEntity(flaskApiUrl, request, String.class);
             return new UsernamePasswordAuthenticationToken(
                     username,
@@ -47,14 +58,18 @@ public class FlaskAuthenticationProvider implements AuthenticationProvider {
                     List.of(new SimpleGrantedAuthority("ROLE_USER"))
             );
         } catch (Exception e) {
+            // Cualquier excepción se interpreta como credenciales inválidas
             throw new BadCredentialsException("Credenciales incorrectas");
         }
     }
 
+    /**
+     * Indica que este AuthenticationProvider solo gestiona tokens de tipo UsernamePasswordAuthenticationToken.
+     *
+     * @param authentication clase del token
+     * @return true si el token es soportado
+     */
     @Override
-/**
- * TODO: Describe supports method.
- */
     public boolean supports(Class<?> authentication) {
         return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }

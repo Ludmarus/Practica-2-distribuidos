@@ -15,23 +15,38 @@ import java.util.List;
 
 @Configuration
 /**
- * SecurityConfig class.
+ * Configuración de seguridad para la aplicación.
+ *
+ * Define el comportamiento de login, logout, CSRF y la estrategia de autenticación
+ * basada en FlaskAuthenticationProvider.
  */
 public class SecurityConfig {
 
+    // Proveedor de autenticación personalizado que delega el login a la API Flask
     private final FlaskAuthenticationProvider flaskAuthenticationProvider;
 
-/**
- * TODO: Describe SecurityConfig method.
- */
+    /**
+     * Constructor que inyecta el proveedor de autenticación personalizado.
+     *
+     * @param flaskAuthenticationProvider proveedor de autenticación delegada a Flask
+     */
     public SecurityConfig(FlaskAuthenticationProvider flaskAuthenticationProvider) {
         this.flaskAuthenticationProvider = flaskAuthenticationProvider;
     }
 
+    /**
+     * Define la cadena de filtros de seguridad de Spring Security.
+     *
+     * Configura:
+     * - Rutas públicas (permitAll)
+     * - Login personalizado (/login)
+     * - Logout
+     * - Desactivación de CSRF para permitir POST desde fuera (Flask, etc.)
+     *
+     * @param http configuración del objeto HttpSecurity
+     * @return SecurityFilterChain configurada
+     */
     @Bean
-/**
- * TODO: Describe securityFilterChain method.
- */
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
@@ -55,18 +70,24 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Configura el repositorio de contexto de seguridad basado en la sesión HTTP.
+     *
+     * Este componente mantiene el contexto de autenticación entre peticiones.
+     *
+     * @return instancia de SecurityContextRepository
+     */
     @Bean
-/**
- * TODO: Describe securityContextRepository method.
- */
     public SecurityContextRepository securityContextRepository() {
         return new HttpSessionSecurityContextRepository();
     }
 
+    /**
+     * Configura el gestor de autenticación de Spring con el proveedor Flask personalizado.
+     *
+     * @return instancia de AuthenticationManager
+     */
     @Bean
-/**
- * TODO: Describe authenticationManager method.
- */
     public AuthenticationManager authenticationManager() {
         return new ProviderManager(List.of(flaskAuthenticationProvider));
     }

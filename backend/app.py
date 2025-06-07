@@ -18,7 +18,7 @@ db.init_app(app)
 @app.route("/api/register", methods=["POST"])
 def register():
     """
-    TODO: Describe register function.
+    Registra un nuevo usuario si el nombre es válido y no está en uso.
     """
     data = request.get_json()
     username = data.get("username")
@@ -45,7 +45,7 @@ def register():
 @app.route("/api/login", methods=["POST"])
 def login():
     """
-    TODO: Describe login function.
+    Verifica las credenciales de un usuario.
     """
     data = request.get_json()
     username = data.get("username")
@@ -68,7 +68,13 @@ def login():
 @app.route("/api/test-error", methods=["GET"])
 def test_error():
     """
-    TODO: Describe test_error function.
+    Simula distintos errores en la base de datos según el parámetro ?caso=...
+
+    Casos soportados:
+      - ok: consulta normal
+      - duplicado: inserta dos usuarios con el mismo nombre
+      - tipo_invalido: inserta un usuario inválido (ej. sin nombre)
+      - sin_contexto: fuerza un acceso fuera de contexto de aplicación
     """
     caso = request.args.get("caso", "")
 
@@ -117,7 +123,11 @@ def test_error():
 @app.route("/api/user/<username>", methods=["GET"])
 def get_user_info(username):
     """
-    TODO: Describe get_user_info function.
+    Devuelve la información pública del usuario.
+
+    Incluye:
+        - username: nombre de usuario
+        - created_at: fecha de creación (formateada)
     """
     user = User.query.filter_by(username=username).first()
 

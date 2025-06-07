@@ -21,10 +21,11 @@ public class RegisterController {
     @Value("${flask.api.register-url}")
     private String flaskRegisterUrl;
 
+    /**
+     * Controlador responsable del registro de nuevos usuarios.
+     * Valida datos en el lado de cliente y comunica con el backend Flask para registrar.
+     */
     @GetMapping("/register")
-/**
- * TODO: Describe showRegisterForm method.
- */
     public String showRegisterForm() {
         return "register";
     }

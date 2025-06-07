@@ -8,7 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Controlador de errores personalizado que captura detalles de errores HTTP.
+ * Controlador de errores personalizado que captura detalles del error HTTP
+ * y los pasa a una vista 'error.html' para mostrarlos de forma elegante.
  */
 @Controller
 /**
@@ -16,10 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 public class CustomErrorController implements ErrorController {
 
+    /**
+     * Maneja las rutas que resultan en error (por ejemplo, 404 o 500),
+     * y pasa la información relevante a la plantilla 'error.html'.
+     *
+     * @param request petición original que causó el error
+     * @param model objeto de Thymeleaf para pasar atributos a la vista
+     * @return nombre de la plantilla de error
+     */
     @RequestMapping("/error")
-/**
- * TODO: Describe handleError method.
- */
     public String handleError(HttpServletRequest request, Model model) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         Object message = request.getAttribute(RequestDispatcher.ERROR_MESSAGE);
