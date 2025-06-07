@@ -19,5 +19,8 @@ __pycache__/
 # Javadoc
 javadoc/
 
+# SQLite
+/frontend/instance/
+
 # Otros
 .DS_Store

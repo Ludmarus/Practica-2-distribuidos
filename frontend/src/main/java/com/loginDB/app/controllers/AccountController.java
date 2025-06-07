@@ -19,6 +19,7 @@ import java.util.Map;
 @Controller
 public class AccountController {
 
+    // Ruta del backend (localhost en IntelliJ, backend en Docker)
     @Value("${flask.api.base-url}")
     private String flaskApiBaseUrl;
 
